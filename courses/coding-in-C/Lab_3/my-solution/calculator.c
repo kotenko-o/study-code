@@ -3,6 +3,7 @@
 
 float ask_for_number(unsigned short n) {
     float number;
+    char c;
     if (n == 1) {
         printf("Please enter 1st number: ");
     } else if (n == 2) {
@@ -10,6 +11,7 @@ float ask_for_number(unsigned short n) {
     }
     if (scanf("%f", &number) != 1) {
         printf("Something went wrong. Please try again.\n");
+        while ((c = getchar()) != '\n' && c != EOF); // reading and cleaning the wrong input line
         number = ask_for_number(n);
     }
     return number;
