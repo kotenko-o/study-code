@@ -40,7 +40,7 @@ g++ helloWorld.cpp -o helloWorld
 The goal of this section is to get to know some new features of the C++ language including bool, namespaces, input/output via streams.
 
 ### Task Description
-Your task is to implement a software that receives the age of an user via keyboard and determines if the user is akid/teenager, an adult or a senior.
+Your task is to implement a software that receives the age of an user via keyboard and determines if the user is a kid/teenager, an adult or a senior citizen.
 
 ### Requirements
 
@@ -59,11 +59,31 @@ bool isSenior(___ age);
    * true if age is 65 or older
    * false otherwise
 
-* As datatype for the parameters, you should use a portable type from \<cstdint>.
+* As data type for the parameters, you should use a portable type from \<cstdint>.
+* Do not use the __using__ keyword.
 * Output of the main program should look like this:
-Question: Which data types could be used? Implement it with using and without using
+```c
+Please enter your age: 77
+You are 77 years old.
+That means that you are a senior citizen.
+```
+```c
+Please enter your age: 48
+You are 48 years old.
+That means that you are an adult.
+```
+```c
+Please enter your age: 13
+You are 13 years old.
+That means that you are still a kid or teenager.
+```
+* Use the portable data type __uint8_t__ in the main to store entered age.
+* Implement it with and without the keyword __using__
 
-### Hint
+### Questions & further tasks
+Note: Write the answers for the questions in the code as comments.
+* What exactly is the problem when using __uint8_t__ for storing the entered age of the user?
+* Fix the issue when using __uint8_t__ by using an integer and static casts instead.
+* Which other portable data types would make sense in this example?
 
-Think about how the **row index and column index together** can be used to decide whether a field is light or dark.
 
