@@ -47,7 +47,7 @@ Use names that describe purpose clearly.
 - **Variables and parameters:** `lower_snake_case`
 - **Functions:** `lower_snake_case`, preferably verbs
 - **Constants:** `UPPER_SNAKE_CASE`
-- **Classes / structs / enums:** `PascalCase`
+- **Classes / methods / structs / enums:** `PascalCase`
 - **Pointers:** start with __p___ or __ptr___
 
 ### Good
@@ -84,7 +84,7 @@ Consistency is mandatory.
 
 ### Rules
 
-- Use **4 spaces** per indentation level.
+- Use **4 spaces** per indentation level or 1 tab.
 - Do **not** mix tabs and spaces.
 - Use **one statement per line**.
 - Always use braces `{}` for control structures.
