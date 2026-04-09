@@ -36,7 +36,7 @@ int main()
      * and so the code would not work. Moreover, whenever printed to the console
      * the character is shown not the number.
      *
-     * Other options would be: Use an integer instead and the cast to:
+     * Other options would be: Use an integer instead and then cast to:
      * std::uint16_t or std::uint32_t increasing the needed storage
      * std::uint_least16_t ensuring the minimum size of 8 Bit
      * std::uint_fast16_t ensuring using the most efficient data type for the cpu
