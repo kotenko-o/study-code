@@ -11,7 +11,7 @@ namespace validation {
 
 int main() {
 
-    std::uint16_t age_input = MAXIMAL_AGE;
+    int age_input = MAXIMAL_AGE;
 
     std::cout << "Please enter your age: ";
     while (
@@ -27,9 +27,9 @@ int main() {
 
     std::cout << "You are " << age_input << " years old." << std::endl;
     
-    if (validation::isSenior(age_input)) {
+    if (validation::isSenior(static_cast<uint8_t>(age_input))) {
         std::cout << "That means that you are a senior citizen." << std::endl;
-    } else if (validation::isAdult(age_input)) {
+    } else if (validation::isAdult(static_cast<uint8_t>(age_input))) {
         std::cout << "That means that you are an adult." << std::endl;
     } else {
         std::cout << "That means that you are still a kid or teenager." << std::endl;
