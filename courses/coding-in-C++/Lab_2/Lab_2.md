@@ -233,9 +233,8 @@ A cinema manages movies, customers, and tickets.
 - The total number of created tickets should be tracked.
 - The final ticket price depends on the movie price.
 
----
 
-## Tasks
+### Tasks
 
 1. Model the described system in an UML class diagram in drawIO.
 
@@ -252,103 +251,145 @@ A cinema manages movies, customers, and tickets.
    - Mark appropriate methods with `{query}`
    - Use the direction for parameters
 
-## 🟡 Section V: UML Modeling – Online Learning Platform
+## 🔴 Section V: Search Engine
 
-In this section you will model a simplified **Online Learning Platform** and focus on identifying and designing **relationships** between classes.
-
-You will practice the following concepts:
-
-- UML class diagrams  
-- identifying **composition vs aggregation**  
-- modeling multiplicities and associations  
-- transferring UML into C++ code  
+In this section, you will create a simplified **Search Engine System** including UML diagrams and C++ code.
 
 ---
 
-### 🧩 Task Description
+### 📘 System Description
 
-You are asked to design a simplified **Online Learning Platform** (similar to Moodle).
+A search engine allows users to enter a textual query in order to find relevant web content.
 
-The platform manages courses, learning content, and users.
+Each searchable item in the system represents a web resource.  
+Such a resource has a unique address, contains textual information, and has an internal ranking value that indicates how relevant or important it is.  
+Some values are not stored directly but can be derived, for example whether a resource is considered “popular” based on its ranking.
 
----
+Users interact with the system by entering search queries.  
+A query consists of a text input and may define a maximum number of results that should be returned.  
+It should be possible to check whether a query is valid (e.g. not empty).
 
-### 📘 Requirements
+The system itself processes queries and keeps track of usage statistics.  
+For example, it may count how many queries have been executed in total.  
+Additionally, the system should be able to output basic information about itself.
 
-- The platform offers multiple **courses**.
-   - The number of courses is technically limited to **100**
+Each component of the system should provide meaningful functionality, such as:
 
-- A **course** represents a learning unit:
-  - it should have a title and a description  
-  - it should allow adding or in general organizing its learning material 
-
-- A course is structured into smaller parts called **lessons**:
-  - each lesson can contain different types of **content**  
-  - content could be, for example, text, video, or quizzes  
-
-- Users can participate in courses:
-  - a **user** should have identifying information  
-  - users should be able to enroll or leave in courses  
-  - users need to be registered **at least on one platform** (e.g. Moodle RV, FN, etc.) 
+- displaying its internal state in a readable format  
+- checking conditions without modifying internal data  
+- processing input parameters where appropriate
 
 ---
 
-### Task Part 1 – UML Diagram
+### Tasks: Part I
 
-Create a UML class diagram in draw.io that:
+- Create an **UML class diagram** for the described system
+- You must **identify all necessary classes yourself**  
+- Decide which elements are:
+  - **attributes**
+  - **methods (operations)**  
+- Include:
+  - visibility (`+`, `-`)  
+  - data types  
+  - return types  
+  - parameters including direction
+  - mark readonly methods as `{query}`  
 
-1. Identifies all relevant classes based on the description  
-2. Defines:
-   - attributes with visibility and types  
-   - methods (at least one meaningful method per class)
+- Your diagram must contain at least:
+  - one **static attribute**  
+  - one **derived attribute**  
 
-3. Models relationships:
-   - clearly distinguish between:
-     - **composition**
-     - **aggregation**
-     - **association**
+🚫 Do **not** model relationships between classes in this task.
 
-4. Includes:
-   - multiplicities (e.g. 1, 0..*, etc.)
-   - roles or attributes connecting the classes
+- Create an **UML object diagram** that shows one concrete snapshot of your system at runtime
+- Use meaningful object names and concrete attribute values
 
-You must decide yourself:
-- which elements should be modeled as **classes**
-- which properties should be **attributes**
-- which actions should be **methods**
+### Tasks: Part II
 
-and especially:
+- Based on your UML diagram, implement the Search Engine system in C++
+- The code should reflect exactly your UML architecture
+- The code should consider OOP best-practices such as abstraction and encapsulation
 
-- which relationships are **compositions**
-- which are **aggregations**
-- which are simple **associations**
+Additionally, implement the following functionality:
+- Implement a method that performs the actual search feature; e.g.
+   - storing several web resources inside the search engine
+   - checking whether the query text is contained in the text content of a resource
+   - sorting all matching resources by ranking in descending order
+   - returning or printing only the first `maxResults` matches
 
----
+- Demonstrate the functionality in `main()` with multiple resources and at least two different queries
 
-### Task Part 2 – Justification
+### 🟢 Section VI: Fluent Query Builder
 
-Answer the following:
-
-1. Which relationships did you model as **composition** and why?  
-2. Which relationships did you model as **aggregation** and why?  
-3. Which design decisions were not obvious and could be modeled differently?  
-
-👉 There is not always a single correct answer — your reasoning is essential.
-
----
-
-### Task Part 3 – C++ Implementation
-
-Transfer your UML model into C++ code.
+In this task you will implement a small helper class for building search queries using **method chaining** and **constexpr values**.
 
 ---
 
-- Implement the classes you identified  
-- Use appropriate access modifiers (`private`, `public`)  
-- Represent relationships using:
-  - direct members (for strong ownership)
-  - pointers or references (for weaker relationships)
+### 📘 Task Description
 
-- In main, create objects of your classes
-- Simulate interaction (e.g. enrolling, accessing content)  
-- Call at least one method from each class  
+Implement a class `QueryBuilder` that allows constructing a search query step by step using a fluent interface.
+
+The goal is to enable code like this:
+
+```cpp
+QueryBuilder qb;
+qb.setText("C++")
+  .setMaxResults(5)
+  .enableCaseSensitive(false)
+  .build()
+  .print();
+```
+
+---
+
+### Requirements
+
+- The class should contain at least:
+   - `std::string text`
+   - `int maxResults`
+   - `bool caseSensitive`
+
+- Define a constant value for the maximum number of results
+- This constant should be available at compile-time
+- Use this value to initialize `maxResults`
+
+- The class should have at least the following methods:
+   - `setText(const std::string& text)`
+   - `setMaxResults(int maxResults)`
+   - `enableCaseSensitive(bool enabled)`
+
+Method Chaining should be enabled. I.e. all setter methods must:
+   - modify the object state  
+   - return a reference to the current object (`*this`)
+
+
+In addition, the following methods need to be implemented:
+#### build()
+
+- Returns the fully constructed query object  
+- You may:
+  - return the builder itself **or**
+  - define a small `SearchQuery` struct/class and return that  
+
+#### print()
+
+- Outputs all current values in a readable format  
+
+---
+
+### Additional Constraints
+
+- Use `const std::string&` where appropriate  
+- At least one method must be marked as `const`  
+- Ensure reasonable default values using `constexpr`  
+- Prevent invalid values (e.g. negative `maxResults`)
+
+---
+
+### Example Output
+
+```text
+Query: C++
+Max Results: 5
+Case Sensitive: false
+```
