@@ -227,88 +227,150 @@ Answer as comments:
 
 ---
 
-## 🔴 Section V: Drone Mission Analyzer (Integration)
+## 🔴 Section IV: Drone Black Box Analyzer
 
-Now you combine everything into a **complete analysis tool**.
+In this final task, you will combine the ideas from all previous sections into one larger program.
+
+A drone test bench stores different kinds of recorded black box data:
+
+- numeric sensor values such as temperature, voltage, and vibration
+- boolean status streams such as motor active / inactive or GPS lock / no GPS lock
+- fixed-size sensor frames captured at specific moments
+
+Your task is to build a **generic black box analyzer** that can process such data in a reusable way.
+
+The goal is not just to write another isolated template function, but to combine:
+
+- generic functions
+- fixed-size arrays
+- `std::vector`
+- iterators
+- STL algorithms
+- template specialization
 
 ---
 
-### Task 9: Build a Generic Analysis Toolkit
+### Task 9: Build a Generic Black Box Analyzer
 
-The drone test bench must evaluate recorded data automatically.
+Write a program that analyzes several kinds of drone test data.
 
 ---
 
-### Part A: Generic Analysis
+### Part A: Reusable Analysis Functions
 
-Implement generic functions to compute:
+Implement generic functions that can analyze a dataset stored in a `std::vector`.
 
-- sum of values
-- maximum value
-- average value
+Your analyzer must be able to determine:
+
+- the sum of all values
+- the largest value
+- the average value
+- the number of occurrences of a specific value
+- whether a specific value exists in the dataset
 
 #### Requirements
 
-- Use `std::vector`
-- Use STL algorithms where appropriate
-
----
-
-### Part B: Special Case for System States
-
-Drone logs may contain boolean values:
-
-- `true` → system active
-- `false` → system inactive
-
-Implement a **template specialization** for one function.
-
-#### Requirement
-
-Return:
-
-`true` if more than half of the values are true, otherwise false.
+- Use STL algorithms wherever appropriate
+- Do not write separate versions for `int` and `double`
+- Test your functions with at least:
+  - one `std::vector<int>`
+  - one `std::vector<double>`
 
 #### Context
 
-Boolean data represents states, not numeric values — it must be handled differently.
+The drone test bench should use the same analysis logic for different numeric measurement types.
 
 ---
 
-### Part C: Integration Program
+### Part B: Frame Import from Fixed-Size Sensor Data
 
-Build a program that:
+The drone firmware delivers some measurements as fixed-size sensor frames.
 
-1. Processes fixed sensor frames
-2. Stores data in vectors
-3. Cleans and analyzes recorded data
-4. Applies your generic analysis functions
-5. Handles boolean system states correctly
+Reuse your work from the previous sections to process such frames.
 
-#### Output
+#### Requirements
 
-For each dataset:
+- Create at least two fixed-size arrays that represent sensor frames
+- Print the frames using your existing generic array logic
+- Transfer the frame data into `std::vector`s
+- Analyze the resulting vectors with your functions from Part A
 
-- raw data
-- processed data
-- computed results
+#### Context
 
----
-
-## Reflection Questions
-
-1. Why are templates useful in drone software?
-2. Why do STL algorithms not depend on container type?
-3. Why do some algorithms not work with all containers?
-4. When is template specialization useful?
-5. What disadvantages did you observe?
+This simulates how embedded drone firmware hands over fixed-size measurement blocks to a more flexible analysis tool.
 
 ---
 
-## Learning Outcomes
+### Part C: Status Stream Specialization
 
-- write generic functions
-- understand templates and specialization
-- use STL containers and algorithms
-- work with iterators
-- build a small real-world inspired data processing system
+The drone also records boolean status streams such as:
+
+- motor active / inactive
+- obstacle sensor ready / not ready
+- GPS lock / no GPS lock
+
+For such data, the generic numeric analysis is not meaningful.
+
+Implement a **template specialization** for one of your generic analysis functions so that boolean status streams are evaluated differently.
+
+#### Required rule
+
+For `bool`, your specialized function shall return:
+
+- `true`, if more than half of the recorded states are `true`
+- `false`, otherwise
+
+#### Additional requirement
+
+In your program output, clearly explain what the boolean result means, for example:
+
+- `Motor was active for most of the test run: true`
+
+#### Context
+
+This is the key place where template specialization is necessary:
+boolean state data must be interpreted differently from numeric sensor data.
+
+---
+
+### Part D: Black Box Report
+
+Create a final report for all datasets.
+
+Your program must process at least:
+
+- one integer dataset
+- one double dataset
+- one boolean dataset
+- one fixed-size sensor frame that is converted into a vector
+
+For each dataset, print:
+
+- a title
+- the raw data
+- the processed / analyzed results
+- a short interpretation of the result
+
+#### Example ideas for dataset names
+
+- Motor temperature log
+- Battery voltage log
+- GPS lock state log
+- Vibration frame A
+
+---
+
+### Part E: Integration Requirements
+
+Your final solution must clearly reuse ideas from earlier tasks.
+
+#### Requirements
+
+- Reuse or adapt your earlier generic print logic
+- Reuse or adapt your fixed-size array logic
+- Use `std::vector` for flexible analysis
+- Use iterators or STL algorithms explicitly
+- Use template specialization for boolean data
+- Keep the program modular with multiple functions
+
+---
