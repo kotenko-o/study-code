@@ -65,7 +65,7 @@ Write a **generic function** that prints all elements of such a frame.
 
 - The function shall take:
   - an array
-  - its size
+  - its size (assume always size > 0)
 - Output format example:
   - `[12, 15, 18, 21]`
 - Test with:
@@ -87,6 +87,7 @@ Write a **generic function** that returns the smallest value in a frame.
   - `int`
   - `double`
 - Do not use STL algorithms
+- assume always size > 0
 
 ---
 
