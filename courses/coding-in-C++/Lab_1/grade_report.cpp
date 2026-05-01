@@ -2,6 +2,7 @@
 #include <iostream>
 #include <limits>
 #include <cstdint>
+#include <iomanip>
 
 constexpr int MIN_GRADE = 0;
 constexpr int MAX_GRADE = 100;
@@ -58,23 +59,35 @@ void readStudentData(std::string &name, std::uint_fast8_t &homework, std::uint_f
  * @param[in]       grade       die zu bewertende Note
  * @return          string      Entsprechende Buchstabe
  */
-std::string getLetter(float &grade) {
+void getLetter(float &grade, std::string &letter, std::string &status) {
     if (grade >= MIN_A) {
-        return "A";
+        letter = "A";
+        status = "Pass";
+        return;
     }
     if (grade >= MIN_B) {
-        return "B";
+        letter = "B";
+        status = "Pass";
+        return;
     }
     if (grade >= MIN_C) {
-        return "C";
+        letter = "C";
+        status = "Pass";
+        return;
     }
     if (grade >= MIN_D) {
-        return "D";
+        letter = "D";
+        status = "Conditional pass";
+        return;
     } 
     if (grade >= MIN_E) {
-        return "E";
+        letter = "E";
+        status = "Conditional pass";
+        return;
     }
-    return "F";
+    letter = "F";
+    status = "Fail";
+    return;
 }
 
 /**
@@ -85,18 +98,30 @@ std::string getLetter(float &grade) {
  * @param[out]      finalGrade  Final Grade
  * @param[out]      letterGrade Grade as Letter
  */
-void calculateGrade(std::uint_fast8_t &homework, std::uint_fast8_t &midterm, std::uint_fast8_t &finalExam, std::uint_fast8_t &finalGrade, std::string &letterGrade) {
-
+void calculateGrade(std::uint_fast8_t &homework, std::uint_fast8_t &midterm, std::uint_fast8_t &finalExam, float &finalGrade, std::string &letterGrade, std::string &status) {
+    if (W_HOMEWORK + W_MIDTERM + W_FINALEXAM != 1.0) {
+        std::cout << "[WARNING] Weighst are not set correctly." << std::endl;
+    }
+    finalGrade = homework * W_HOMEWORK + midterm * W_MIDTERM + finalExam * W_FINALEXAM;
+    getLetter(finalGrade, letterGrade, status);
 }
 
 /**
  * @brief Fuktio um ein Notenbericht zu ausgeben
  */
-void printReport(std::string &name, std::uint_fast8_t &homework, std::uint_fast8_t &midterm, std::uint_fast8_t &finalexam) {
+void printReport(std::string &name, std::uint_fast8_t &homework, std::uint_fast8_t &midterm, std::uint_fast8_t &finalexam,
+                float &finalGrade, std::string &letter, std::string &status) {
     std::cout << "-------------------------------------\nStudent Report\n-------------------------------------" << std::endl;
     std::cout << "Name: " << name << std::endl;
     std::cout << "\nScores\n-------------------------------------" << std::endl;
-    std::cout << std::strw << "Homework" <<
+    std::cout << std::fixed;
+    std::cout << std::left << std::setw(15) << "Homework" << ": " << std::setprecision(2) << static_cast<float>(homework) <<std::endl;
+    std::cout << std::left << std::setw(15) << "Midterm" << ": " << std::setprecision(2) << static_cast<float>(midterm) <<std::endl;
+    std::cout << std::left << std::setw(15) << "Final Exam" << ": " << std::setprecision(2) << static_cast<float>(finalexam) << "\n" <<std::endl;
+    std::cout << std::left << std::setw(15) << "Final Grade" << ": " << std::setprecision(2) << finalGrade << std::endl;
+    std::cout << std::left << std::setw(15) << "Letter Grade" << ": " << letter <<std::endl;
+    std::cout << std::left << std::setw(15) << "Status" << ": " << status << std::endl;
+    std::cout << "-------------------------------------" << std::endl;
 }
 
 int main() {
@@ -107,8 +132,10 @@ int main() {
 
     float finalGrade;
     std::string letterGrade;
+    std::string status;
 
     readStudentData(studentName, homework, midterm, finalExam);
-    printReport(studentName);
+    calculateGrade(homework, midterm, finalExam, finalGrade, letterGrade, status);
+    printReport(studentName, homework, midterm, finalExam, finalGrade, letterGrade, status);
     return 0;
 }
