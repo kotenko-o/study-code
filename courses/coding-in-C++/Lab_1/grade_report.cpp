@@ -23,15 +23,18 @@ constexpr float W_FINALEXAM = 0.35;
  */
 void readScore(std::uint_fast8_t &grade) {
     int readValue;
-    std::cin.clear();
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    if (!(std::cin >> readValue)) {
-        std::cout << "Es muss eine Ganzzahl sein. Versuchen Sie nochmals: ";
-        readScore(grade);
-    }
-    if (readValue > MAX_GRADE || readValue < MIN_GRADE) {
-        std::cout << "Von Ihnen eingegebene Note liegt ausser bereich [0, 100]. Versuchen Sie nochmals: ";
-        readScore(grade);
+    while (true) {
+        std::cin.clear();
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        if (!(std::cin >> readValue)) {
+            std::cout << "Es muss eine Ganzzahl sein. Versuchen Sie nochmals: ";
+            continue;
+        }
+        if (readValue > MAX_GRADE || readValue < MIN_GRADE) {
+            std::cout << "Von Ihnen eingegebene Note liegt ausser bereich [0, 100]. Versuchen Sie nochmals: ";
+            continue;
+        }
+        break;
     }
     grade = static_cast<uint_fast8_t>(readValue);
 }
@@ -55,9 +58,10 @@ void readStudentData(std::string &name, std::uint_fast8_t &homework, std::uint_f
 }
 
 /**
- * @brief Hilfsfunktion, um die Buchstabe-Note zu bekommen
+ * @brief Hilfsfunktion, um die Buchstabe-Note sowie Status zu bekommen
  * @param[in]       grade       die zu bewertende Note
- * @return          string      Entsprechende Buchstabe
+ * @param[out]      letter      Variable mit der Buchstabe
+ * @param[out]      status      Variable mit dem Status
  */
 void getLetter(float &grade, std::string &letter, std::string &status) {
     if (grade >= MIN_A) {
@@ -97,8 +101,9 @@ void getLetter(float &grade, std::string &letter, std::string &status) {
  * @param[in]       finalExam   finalExam note
  * @param[out]      finalGrade  Final Grade
  * @param[out]      letterGrade Grade as Letter
+ * @param[out]      status      Status nicht/bestanden
  */
-void calculateGrade(std::uint_fast8_t &homework, std::uint_fast8_t &midterm, std::uint_fast8_t &finalExam, float &finalGrade, std::string &letterGrade, std::string &status) {
+void calculateGrade(const std::uint_fast8_t &homework, const std::uint_fast8_t &midterm, const std::uint_fast8_t &finalExam, float &finalGrade, std::string &letterGrade, std::string &status) {
     if (W_HOMEWORK + W_MIDTERM + W_FINALEXAM != 1.0) {
         std::cout << "[WARNING] Weighst are not set correctly." << std::endl;
     }
@@ -107,7 +112,14 @@ void calculateGrade(std::uint_fast8_t &homework, std::uint_fast8_t &midterm, std
 }
 
 /**
- * @brief Fuktio um ein Notenbericht zu ausgeben
+ * @brief Fuktion um ein Notenbericht zu ausgeben
+ * @param[in]   name        Name des Studenten
+ * @param[in]   homework    Homework-Note
+ * @param[in]   midterm     Midterm-Note
+ * @param[in]   finalExam   Final Exam Note
+ * @param[in]   fianlGrade  Finale Note
+ * @param[in]   letter      Note als Buchstabe
+ * @param[in]   status      Status
  */
 void printReport(std::string &name, std::uint_fast8_t &homework, std::uint_fast8_t &midterm, std::uint_fast8_t &finalexam,
                 float &finalGrade, std::string &letter, std::string &status) {
