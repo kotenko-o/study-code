@@ -48,7 +48,7 @@ class BankAccount {
          * @brief Funktion, um Balance zu bekommen
          * @return  double      Aktueller stand
          */
-        double getBalace();
+        double getBalance();
         /**
          * @brief Konsolausgabe der Info über Konto
          */
@@ -112,7 +112,7 @@ int BankAccount::withdraw(double amount) {
     return 0;
 }
 
-double BankAccount::getBalace() {
+double BankAccount::getBalance() {
             return this->balance;
         }
 
