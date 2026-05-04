@@ -70,9 +70,22 @@ class Vector2D {
             this->y = y;
         }
 
-        void operator+=(Vector2D v2) {
+        /**
+         * @brief       Addition von einem anderen Vector zu diesem
+         * @param[in]   v2      Der andere Vektor
+         */
+        void operator+=(Vector2D &v2) {
             this->x += v2.getX();
             this->y += v2.getY();
+        }
+
+        /**
+         * @brief       Addition zweier Vektoren
+         * @param[in]   v2      Der "rechte" Vektor
+         * @return              Ref. auf die Summen-Vektor    
+         */
+        Vector2D operator+(Vector2D &v2) {
+            return Vector2D(this->getX() + v2.getX(), this->getY() + v2.getY());
         }
 };
 
@@ -97,6 +110,9 @@ int main() {
     std::cout << "Vec2 += Vec1: ";
     vec2 += vec1;
     vec2.printVector();
+
+    std::cout << "Vec2 + Vec1: ";
+    (vec2 + vec1).printVector();
 
     return 0;
 }
