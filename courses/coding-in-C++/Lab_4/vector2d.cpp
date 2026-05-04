@@ -53,14 +53,50 @@ class Vector2D {
             double factor = std::pow(10.0, precision);
             return std::round(this->getLength() * factor) / factor;
         }
+
+        /**
+         * @brief       Setter für X-Koordinate
+         * @param[in]   x       Neue X-Koordinate
+         */
+        void setX(double x) {
+            this->x = x;
+        }
+
+        /**
+         * @brief       Setter für Y-Koordinate
+         * @param[in]   y       Neue Y-Koordinate
+         */
+        void setY(double y) {
+            this->y = y;
+        }
+
+        void operator+=(Vector2D v2) {
+            this->x += v2.getX();
+            this->y += v2.getY();
+        }
 };
 
 int main() {
     Vector2D vec1 = Vector2D();
     Vector2D vec2 = Vector2D(4.0, 4.0);
+    
+    std::cout << "Vec1: ";
     vec1.printVector();
+    std::cout << "Vec2: ";
     vec2.printVector();
-    std::cout << vec2.getLength() << std::endl;
-    std::cout << vec2.getLength(2) << std::endl;
+
+    vec1.setX(-1);
+    vec1.setY(3);
+    std::cout << "Neue Vec1: ";
+    vec1.printVector();
+
+    std::cout << "Laenge Vec2 (Standard + Prec. 2): ";
+    std::cout << vec2.getLength() << ", " << vec2.getLength(2) << std::endl;
+
+    
+    std::cout << "Vec2 += Vec1: ";
+    vec2 += vec1;
+    vec2.printVector();
+
     return 0;
 }
