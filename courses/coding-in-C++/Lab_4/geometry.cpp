@@ -44,8 +44,11 @@ class Rectangle : public GeometricShape {
 };
 
 int main() {
-    GeometricShape* my_circe = new Circle(2);
-    GeometricShape* my_rectangle = new Rectangle(2, 4);
-    delete my_circe;
-    delete my_rectangle;
+    GeometricShape* my_shapes[4];
+    my_shapes[0] = new Circle(1);
+    my_shapes[1] = new Circle(5);
+    my_shapes[2] = new Rectangle(1, 2);
+    my_shapes[3] = new Rectangle(3, 4);
+    for (int i = 0; i < 4; i++)
+        std::cout << my_shapes[i]->getArea() << std::endl;
 }
