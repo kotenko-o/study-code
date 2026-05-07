@@ -1,0 +1,58 @@
+classDiagram
+    class Platform {
+        - string name
+        - id: int ~readOnly, unique~
+        - nextId: int$
+        - courses[MAX_COURSES]: Course&
+        - students[MAX_USERS]: User&
+        + Platform(name: string)
+        + getName() string
+        + setName(name: string) StatusCode
+        + getId() int
+        + addCourse(c: Course&) StatusCode
+        + removeCourse(c: Course&) StatusCode
+        + addUser(s: User&) StatusCode
+        + removeUser(s: User&) StatusCode
+        + printUserInfo() void
+    }
+
+    class Course {
+        - title: string 
+        - description: string
+        - id: int ~readOnly, unique~
+        - nextId: int$
+        - lessons[MAX_LESSONS]
+        + Course(title: string&, description: string& = "")
+        + setCourse(title: string& = nullptr, description: string& = nullptr) StatusCode
+        + getTitle() string
+        + getDescription() string
+        + addLesson(l: Lesson&) StatusCode
+        + removeLesson(l: Lesson&) StatusCode
+        + getLesson(lesson_num: int) *Lesson
+        + printCourseInfo() void
+    }
+
+    class User {
+        - name: string
+        - id: int ~readOnly, unique~
+        - nextId: int$
+        - platforms: Platform[]
+        + User(name: string)
+        + setName(name: string) StatusCode
+        + addPlatform(p: Platform&) StatusCode
+        + removePlatform(p: Platform&) StatusCode
+        + addCourse(c: Course&) StatusCode
+        + removeCourse(c: Course&) StatusCode
+    }
+
+    class StatusCode {
+            <<enumeration>>
+            SUCCESS
+            VALIDATION_ERROR
+            REFERENCE_ERROR
+            OTHER_ERROR
+        }
+
+    User "*" -- "1..*" Platform : registered on
+    Platform "*" -- "0..MAX_COURSES" Course : registered on
+    User "*" -- "*" Course : enrolled on
