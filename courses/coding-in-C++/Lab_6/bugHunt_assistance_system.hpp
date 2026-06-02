@@ -12,9 +12,9 @@ class DistanceSensor
 private:
     std::string position;
     bool active;
+    double measured_distance_m;
 
 public:
-    double measured_distance_m;
 
     DistanceSensor(const std::string &sensor_position,
                    double initial_distance_m);
@@ -81,6 +81,10 @@ public:
 
     void add_sensor(DistanceSensor *sensor);
     void print_warnings() const;
+};
+
+class AssistanceFeature {
+    
 };
 
 #endif

@@ -1,5 +1,8 @@
 #include "bugHunt_assistance_system.hpp"
 
+constexpr double MAXIMAL_ACCELERATION = 5.0;
+constexpr double EMERGENCY_BRAKING_ACCELERATION = 30.0;
+
 DistanceSensor::DistanceSensor(const std::string &sensor_position,
                                double initial_distance_m)
     : position(sensor_position),
@@ -68,10 +71,10 @@ void EmergencyBrakeSystem::evaluate(Vehicle &vehicle,
         return;
     }
 
-    if (front_sensor.get_distance() > critical_distance_m)
+    if (front_sensor.get_distance() < critical_distance_m)
     {
         std::cout << "[EmergencyBrakeSystem] Emergency braking triggered.\n";
-        vehicle.brake(30.0);
+        vehicle.brake(EMERGENCY_BRAKING_ACCELERATION);
     }
 }
 
@@ -120,17 +123,17 @@ void AdaptiveCruiseControl::evaluate(Vehicle &vehicle,
     if (front_sensor.get_distance() < minimum_distance_m)
     {
         std::cout << "[AdaptiveCruiseControl] Vehicle ahead is close. Accelerating.\n";
-        vehicle.accelerate(5.0);
+        vehicle.accelerate(MAXIMAL_ACCELERATION);
     }
     else if (vehicle.get_speed() < target_speed_kmh)
     {
         std::cout << "[AdaptiveCruiseControl] Increasing speed.\n";
-        vehicle.accelerate(5.0);
+        vehicle.accelerate(MAXIMAL_ACCELERATION);
     }
     else if (vehicle.get_speed() > target_speed_kmh)
     {
         std::cout << "[AdaptiveCruiseControl] Reducing speed.\n";
-        vehicle.brake(5.0);
+        vehicle.brake(MAXIMAL_ACCELERATION);
     }
 }
 
